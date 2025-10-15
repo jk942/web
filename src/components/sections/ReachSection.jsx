@@ -1,13 +1,14 @@
 // ReachSection.jsx
 import React, { useState, useEffect } from 'react'; 
 import axios from 'axios'; 
-import Slider from 'react-slick'; 
-// Import Recharts components for the graph
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'; 
-// Import constants and data
+import Slider from 'react-slick';  
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'; 
+import { Link } from 'react-router-dom'; // ✅ ADD BACK for navigation
 import { INTI_RED, mobilityPrograms, dualDegreePartners, mouPartners } from '../../data/websiteData.jsx';
-// Import Lucide icons
-import { Plane, MapPin, Briefcase, GraduationCap, ArrowLeft, Users } from 'lucide-react'; 
+import { Plane, MapPin, Briefcase, GraduationCap, ArrowLeft, Users, ChevronRight } from 'lucide-react'; 
+import { CHART_COLORS } from './CHART_COLORS.jsx';
+import PieChartComponent from './PieChartComponent.jsx';
+
 
 // ----------------------------------------------------------------------
 // 1. HELPER COMPONENTS (DEFINITIONS MUST BE HERE)
@@ -25,7 +26,7 @@ const ProgramIcon = ({ iconName }) => {
     return <IconComponent style={{ color: INTI_RED }} className="w-6 h-6" />;
 }
 
-// DEFINITION for ProgramCard - FIXES Line 187 error
+// DEFINITION for ProgramCard
 const ProgramCard = ({ title, description, iconName }) => (
     <div className="program-card">
         <div className="program-card-header">
@@ -36,7 +37,7 @@ const ProgramCard = ({ title, description, iconName }) => (
     </div>
 );
 
-// DEFINITION for PartnerCard - FIXES Line 196 error
+// DEFINITION for PartnerCard
 const PartnerCard = ({ flag, university, details }) => (
     <div className="partner-card">
         <span className="partner-flag">{flag}</span>
@@ -58,16 +59,14 @@ const MOUCard = ({ name, details }) => (
     </div>
 );
 
-
 const sliderSettings = {
     dots: true, infinite: true, speed: 500, slidesToShow: 3, slidesToScroll: 1, 
-    autoplay: true, autoplaySpeed: 3500, 
+    autoplay: true, autoplaySpeed: 1500, 
     responsive: [       
         { breakpoint: 1024, settings: { slidesToShow: 2 } },
         { breakpoint: 600, settings: { slidesToShow: 1, dots: false } }
     ]
 };
-
 
 // ----------------------------------------------------------------------
 // 2. SCOPUS COLLABORATORS COMPONENT (Handles the partner slider) 
@@ -99,6 +98,12 @@ const ScopusCollaborators = () => {
         fetchPartners();
     }, []);
 
+    // ✅ ADD DEBUGGING
+    console.log("=== DEBUG SCOPUS COLLABORATORS ===");
+    console.log("Loading:", loading);
+    console.log("Partners count:", partners.length);
+    console.log("Component is rendering!");
+
     if (loading) {
         return <div className="text-center py-10">Loading MOU partners...</div>;
     }
@@ -119,15 +124,36 @@ const ScopusCollaborators = () => {
                         </div>
                     ))}
                 </Slider>
+                
+                {/* ✅ DEBUG BUTTON - HIGHLY VISIBLE */}
+                <div className="text-center mt-8 p-6 bg-yellow-100 border-2 border-yellow-400 rounded-lg">
+                    <h3 className="text-lg font-bold text-yellow-800 mb-2">DEBUG AREA</h3>
+                    <p className="text-sm text-yellow-700 mb-4">This should be visible below the slider</p>
+                    
+                    <Link to="/mou-partners">
+                        <button 
+                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-lg flex items-center justify-center gap-3 mx-auto transition-colors shadow-lg"
+                            onClick={() => {
+                                console.log("🎯 BUTTON CLICKED! Should navigate to /mou-partners");
+                                alert("Button clicked! Check console for details.");
+                            }}
+                        >
+                            🔥 CLICK ME - View All MOU Partners
+                            <ChevronRight className="w-6 h-6" />
+                        </button>
+                    </Link>
+                    
+                    <p className="text-xs text-yellow-600 mt-3">
+                        If you can see this, the button container is rendering
+                    </p>
+                </div>
             </div>
         </>
     );
 };
-// ----------------------------------------------------------------------
-
 
 // ----------------------------------------------------------------------
-// 3. SCOPUS GRAPH COMPONENT (Handles the line chart)
+// 3. SCOPUS GRAPH COMPONENT (Handles the PIE CHART)
 // ----------------------------------------------------------------------
 const ScopusGraph = () => {
     const [graphData, setGraphData] = useState([]);
@@ -149,13 +175,12 @@ const ScopusGraph = () => {
             } catch (err) {
                 console.error("Failed to fetch Scopus graph data.", err);
                 setIsLive(false);
-                // Fallback static data if fetch fails
+                // Use the CHART_COLORS variable for fallback data
                 setGraphData([
-                    { year: 2020, collaborations: 5 },
-                    { year: 2021, collaborations: 12 },
-                    { year: 2022, collaborations: 25 },
-                    { year: 2023, collaborations: 35 },
-                    { year: 2024, collaborations: 50 },
+                    { name: 'Asia-Pacific', value: 120, color: CHART_COLORS[0] },
+                    { name: 'Europe', value: 80, color: CHART_COLORS[1] },
+                    { name: 'North America', value: 45, color: CHART_COLORS[2] },
+                    { name: 'Other', value: 30, color: CHART_COLORS[3] },
                 ]);
             } finally {
                 setLoading(false);
@@ -163,43 +188,45 @@ const ScopusGraph = () => {
         };
 
         fetchGraphData();
-    }, []);
+    }, []); 
 
     if (loading) {
-        return <div className="text-center py-10">Loading collaboration graph...</div>;
+        return <div className="text-center py-10">Loading collaboration distribution...</div>;
     }
 
     return (
         <div className="scopus-graph-container">
-            <h4 className="graph-title">Collaborating Institutions Growth (Last 5 Years)</h4>
+            <h4 className="graph-title">Collaboration Distribution by Region</h4>
             <p className="data-source-msg" style={{ color: isLive ? 'green' : INTI_RED }}>
                 {isLive ? `Data fetched live from backend (currently mock data).` : `Displaying static fallback graph data.`}
             </p>
             
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                    data={graphData}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 5 }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="year" />
-                    <YAxis allowDecimals={false} label={{ value: 'Collaborations', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line 
-                        type="monotone" 
-                        dataKey="collaborations" 
-                        stroke={INTI_RED} 
-                        strokeWidth={3} 
-                        dot={{ fill: INTI_RED, r: 4 }} 
-                        name="New Collaborations"
-                    />
-                </LineChart>
+            <ResponsiveContainer width="100%" height={350}>
+                <PieChart margin={{ top: 20, right: 0, left: 0, bottom: 20 }}>
+                    <Pie
+                        data={graphData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%" 
+                        cy="50%" 
+                        outerRadius={120} 
+                        fill="#8884d8"
+                        labelLine={false}
+                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                    >
+                        {
+                            graphData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color || CHART_COLORS[index % CHART_COLORS.length]} />
+                            ))
+                        }
+                    </Pie>
+                    <Tooltip formatter={(value) => `${value} Collaborators`} />
+                    <Legend layout="horizontal" align="center" verticalAlign="bottom" />
+                </PieChart>
             </ResponsiveContainer>
         </div>
     );
 };
-
 
 // ----------------------------------------------------------------------
 // 4. MAIN COMPONENT
@@ -207,20 +234,20 @@ const ScopusGraph = () => {
 const ReachSection = () => (
     <section className="reach-section">
         <div className="container">
-            {/* 1. Global Mobility Programmes (Uses ProgramCard - NOW DEFINED ABOVE) */}
+            {/* 1. Global Mobility Programmes */}
             <h2 className="section-heading">Global Reach: Programmes</h2>
             <div className="program-card-grid">
                 {mobilityPrograms.map((program, index) => (
-                    <ProgramCard key={index} {...program} /> // Line 187 uses ProgramCard
+                    <ProgramCard key={index} {...program} /> 
                 ))}
             </div>
 
-            {/* 2. Dual Award Partners (Uses PartnerCard - NOW DEFINED ABOVE) */}
+            {/* 2. Dual Award Partners */}
             <div className="dual-award-section mt-12">
                 <h3 className="sub-heading-accent">Dual Award Partners</h3>
                 <div className="partner-card-grid">
                     {dualDegreePartners.map((partner, index) => (
-                        <PartnerCard key={index} {...partner} /> // Line 196 uses PartnerCard
+                        <PartnerCard key={index} {...partner} /> 
                     ))}
                 </div>
                 <div className="text-center mt-10">
@@ -229,6 +256,9 @@ const ReachSection = () => (
                     </button>
                 </div>
             </div>
+
+            <PieChartComponent />
+
             
             {/* 3. MEMORANDUMS OF UNDERSTANDING (MOUs) */}
             <div className="mou-section mt-12">
@@ -236,15 +266,19 @@ const ReachSection = () => (
                     <ProgramIcon iconName='Users' />
                     Memorandum of Understanding (MOUs)
                 </h3>
-                <ScopusCollaborators /> 
-
-                <div className="text-center mt-5">
-                    <a href="https://www.scopus.com/pages/organization/60104915#tab=collaborators" target="_blank" rel="noopener noreferrer">
-                        <button className="btn-outlined">
-                            View Full Collaborators List on Scopus
-                        </button>
-                    </a>
+                
+                {/* ✅ UPDATED: Added description about MOU partnerships */}
+                <div className="mou-intro-text text-center max-w-3xl mx-auto mb-8">
+                    <p className="text-lg text-gray-700">
+                        INTI International University has established strategic Memorandums of Understanding (MOUs) 
+                        with prestigious institutions worldwide. These partnerships facilitate student exchanges, 
+                        faculty collaborations, joint research initiatives, and academic program development.
+                    </p>
                 </div>
+                
+                <ScopusCollaborators /> 
+                
+                {/* ❌ REMOVED: The old "View Full Collaborators List on Scopus" button */}
             </div>
             
             {/* 4. SCOPUS COLLABORATION GRAPH SECTION */}

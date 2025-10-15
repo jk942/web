@@ -699,3 +699,86 @@ body {
     color: var(--color-gray);
     margin-bottom: 20px;
 }
+
+/* App.css */
+/* ... (Existing styles for .mou-card, .slick-dots, etc.) ... */
+
+/* --- Scopus Graph Styles (NEW SECTION) --- */
+.scopus-graph-section {
+    padding: 40px 0;
+    /* Use a light background to make the graph stand out */
+    background-color: var(--color-light-gray); 
+    border-radius: 8px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.scopus-graph-container {
+    max-width: 900px;
+    margin: 20px auto 0 auto;
+    padding: 0 10px;
+}
+
+.graph-title {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--color-dark);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.data-source-msg {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--color-gray);
+    margin-bottom: 20px;
+}
+
+/* --- MOU List Page Styles --- */
+.mou-list-page-section {
+    padding: 80px 0;
+    min-height: 80vh;
+}
+
+.partner-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.partner-list-item {
+    border: 1px solid var(--color-light-gray);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: var(--color-white);
+    transition: transform 0.2s;
+}
+
+.partner-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.partner-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.partner-details {
+    font-size: 0.9rem;
+    color: var(--color-gray);
+}
+
+/* Style the clickable heading link */
+.mou-heading-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit;
+    display: block; /* Make the whole area clickable */
+    transition: opacity 0.2s;
+}
+
+.mou-heading-link:hover {
+    opacity: 0.8;
+}
