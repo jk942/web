@@ -1,43 +1,64 @@
 import React from 'react';
-// 🆕 ADD ROUTER IMPORTS
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header.jsx';
 import Footer from './components/layout/Footer.jsx';
 import HeroSection from './components/sections/HeroSection.jsx';
 import ReachSection from './components/sections/ReachSection.jsx';
 import DiscoverPathSection from './components/sections/DiscoverPathSection.jsx';
+import InsightsSection from './components/sections/InsightsSection.jsx';
+import DistinctiveSection from './components/sections/DistinctiveSection.jsx';
+import EventsNewsSection from './components/sections/EventsNewsSection.jsx';
 import AboutHeroSection from './components/sections/AboutHeroSection.jsx'; 
-import ScopusSection from './components/sections/ScopusSection.jsx'; 
-// 🆕 IMPORT THE NEW PAGE COMPONENT
+import ScopusSection from './components/sections/ScopusSection.jsx'; // This import is now redundant but can remain for safety
 import MOUListPage from './components/pages/MOUListPage.jsx'; 
+import AllCollaboratorsPage from './components/pages/AllCollaboratorsPage.jsx';
+import ScopusMetricsPage from './components/pages/ScopusMetricsPage.jsx';
+import GlobalPartnersPage from './components/pages/GlobalPartnersPage.jsx';
+import ProgrammesPage from './components/pages/ProgrammesPage.jsx';
+import ProgrammeDetailPage from './components/pages/ProgrammeDetailPage.jsx';
+import AdmissionsPage from './components/pages/AdmissionsPage.jsx';
+import EventsPage from './components/pages/EventsPage.jsx';
 
-// Component for the content displayed on the Home Page
+
 const HomePageContent = () => (
     <>
         <HeroSection />
         <AboutHeroSection />
-        <ReachSection />
-        <ScopusSection /> 
+        {/* ReachSection removed from home */}
+        {/* REMOVED: <ScopusSection /> */}
+        <InsightsSection />
+        <DistinctiveSection />
+        <EventsNewsSection />
         <DiscoverPathSection />
     </>
 );
 
 const App = () => {
   return (
-    // 🆕 WRAP THE ENTIRE APP IN BROWSER ROUTER
+    
     <BrowserRouter>
         <div className="min-h-screen bg-white font-sans antialiased">
             <Header />
             <main>
-                {/* 🆕 DEFINE ALL ROUTES */}
+                {/* Main content area */}
                 <Routes>
-                    {/* Route for the Home Page (/) */}
+                    {/* Home Page */}
                     <Route path="/" element={<HomePageContent />} />
                     
-                    {/* Route for the MOU List Page (/mou-partners) */}
+                    {/* Other Pages */}
+                    <Route path="/programmes" element={<ProgrammesPage />} />
+                    <Route path="/programmes/:programSlug" element={<ProgrammeDetailPage />} />
                     <Route path="/mou-partners" element={<MOUListPage />} />
+
+                    <Route path="/all-collaborators" element={<AllCollaboratorsPage />} />
+
+                    <Route path="/research-metrics" element={<ScopusMetricsPage />} />
+
+                    <Route path="/global-partners" element={<GlobalPartnersPage />} />
+                    <Route path="/admissions" element={<AdmissionsPage />} />
+                    <Route path="/events" element={<EventsPage />} />
                     
-                    {/* You can add a 404 handler here if needed */}
+                    {/* Additional Routes can go here */}
                 </Routes>
             </main>
             <Footer />

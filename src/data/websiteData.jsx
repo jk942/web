@@ -1,33 +1,31 @@
-// websiteData.js (FINAL PURE DATA FILE)
 
-// --- Constants ---
 export const INTI_RED = '#AE1C30';
 export const INTI_YELLOW = '#FFD900';
 
-// --- Navigation Links (Used in Header) ---
-export const navLinks = ['Home', 'Programmes', 'Global Partners', 'Admissions', 'The INTI Edge'];
+export const navLinks = ['Home', 'Programmes', 'Global Partners', 'Admissions', 'Events'];
 
-// --- Mobility Programs (Used in ReachSection) ---
-// Icons are now simple string names, rendered in ReachSection.jsx
+
 export const mobilityPrograms = [
     {
         title: 'Semester Abroad Programme (SAP)',
+        slug: 'semester-abroad-programme-sap',
         description: 'Study a full semester overseas at top partner universities globally, earning credits transferable back to INTI.',
         iconName: 'Plane', 
     },
     {
         title: 'Short-Term Study Tours',
+        slug: 'short-term-study-tours',
         description: 'Participate in focused, short-term programs for cultural immersion, language studies, and practical workshops.',
         iconName: 'MapPin',
     },
     {
         title: 'Faculty exchnage programmes',
+        slug: 'faculty-exchange-programmes',
         description: 'The INTI Global Faculty Exchange Programme is a vital initiative designed to foster cross-cultural collaboration, research excellence, and pedagogical innovation among our faculty and our international partner institutions.',
         iconName: 'Briefcase',
     },
 ];
 
-// --- Dual Degree Partners (Used in ReachSection) ---
 export const dualDegreePartners = [
     {
         flag: '🇬🇧',
@@ -42,7 +40,6 @@ export const dualDegreePartners = [
     
 ];
 
-// --- MOU Partner Data (Used in ReachSection) ---
 export const mouPartners = [
     { 
         name: 'Universitas Abulyatama (UNAYA), Indonesia',
@@ -58,7 +55,6 @@ export const mouPartners = [
     },
 ];
 
-// --- Footer Links (Used in Footer) ---
 export const footerLinks = [
     {
         title: 'Academic',

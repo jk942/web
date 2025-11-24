@@ -1,11 +1,10 @@
-// MOUListPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Users, BookOpen, Globe } from 'lucide-react';
 import { mouPartners, INTI_RED } from '../../data/websiteData.jsx';
 
-// Enhanced partner data with more details
 const enhancedPartners = [
     {
         name: 'Universitas Abulyatama (UNAYA), Indonesia',
@@ -63,7 +62,6 @@ const enhancedPartners = [
     }
 ];
 
-// Enhanced component to render a single partner with more details
 const PartnerListItem = ({ partner }) => (
     <div className="partner-list-item bg-white rounded-lg shadow-md p-6 mb-6 border-l-4" style={{ borderLeftColor: INTI_RED }}>
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
@@ -120,7 +118,6 @@ const MOUListPage = () => {
             try {
                 const response = await axios.get(`http://localhost:${serverPort}/api/scopus-collaborators`); 
                 if (response.data.success && response.data.data.length > 0) { 
-                    // Enhance the fetched data with additional details
                     const enhancedData = response.data.data.map((partner, index) => ({
                         ...partner,
                         ...(enhancedPartners[index] || {})
@@ -152,7 +149,7 @@ const MOUListPage = () => {
     return (
         <section className="mou-list-page-section bg-gray-50 min-h-screen py-12">
             <div className="container">
-                {/* Back Button */}
+                {}
                 <div className="mb-8">
                     <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors">
                         <ArrowLeft className="w-4 h-4" />
@@ -160,7 +157,7 @@ const MOUListPage = () => {
                     </Link>
                 </div>
 
-                {/* Page Header */}
+                {}
                 <div className="text-center mb-12">
                     <h1 className="section-heading text-4xl font-bold mb-4" style={{ color: INTI_RED }}>
                         All Global MOU Partners
@@ -172,7 +169,7 @@ const MOUListPage = () => {
                     </p>
                 </div>
 
-                {/* Statistics */}
+                {}
                 <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         <div>
@@ -194,14 +191,14 @@ const MOUListPage = () => {
                     </div>
                 </div>
 
-                {/* Partners List */}
+                {}
                 <div className="partner-list-grid">
                     {partners.map((partner, index) => (
                         <PartnerListItem key={index} partner={partner} />
                     ))}
                 </div>
 
-                {/* Contact Section */}
+                {}
                 <div className="text-center mt-16 bg-white rounded-lg shadow-sm p-8">
                     <h3 className="text-2xl font-bold mb-4" style={{ color: INTI_RED }}>
                         Interested in Partnership?

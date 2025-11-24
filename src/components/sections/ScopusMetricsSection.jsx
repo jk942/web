@@ -1,4 +1,4 @@
-// ScopusMetricsSection.jsx - New component for displaying Scopus metrics
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TrendingUp, FileText, BarChart, RefreshCw, AlertCircle } from 'lucide-react';

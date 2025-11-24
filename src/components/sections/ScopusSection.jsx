@@ -1,6 +1,8 @@
+// ScopusSection.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { TrendingUp, FileText, BarChart } from 'lucide-react'; // Example icons
+import { Link } from 'react-router-dom'; // ⬅️ THIS LINE IS CRUCIAL FOR REDIRECTION
 
 const ScopusSection = () => {
     const [metrics, setMetrics] = useState(null);
@@ -9,7 +11,7 @@ const ScopusSection = () => {
     useEffect(() => {
         const fetchScopusData = async () => {
             try {
-                // Call the new Node.js endpoint
+                // NOTE: Check your port (5000 or 3001) based on your server.js
                 const response = await axios.get('http://localhost:5000/api/scopus-data'); 
                 
                 if (response.data.success) {
@@ -17,7 +19,7 @@ const ScopusSection = () => {
                 }
             } catch (error) {
                 console.error("Error fetching Scopus data:", error);
-                setMetrics({}); // Set to empty object on error
+                setMetrics({}); 
             } finally {
                 setLoading(false);
             }
@@ -29,8 +31,7 @@ const ScopusSection = () => {
     if (loading) {
         return <section className="scopus-section-wrapper"><p className="container">Loading Scopus metrics...</p></section>;
     }
-    
-    // Check if data was successfully fetched (not null or empty)
+
     const hasData = metrics && Object.keys(metrics).length > 0;
 
     return (
@@ -39,28 +40,32 @@ const ScopusSection = () => {
                 <h2 className="section-heading text-primary">Research Impact on Scopus</h2>
                 
                 {hasData ? (
-                    <div className="scopus-metrics-grid">
-                        {/* H-Index Card */}
-                        <div className="metric-card">
-                            <TrendingUp className="metric-icon" size={32} />
-                            <p className="metric-value">{metrics.hIndex || 'N/A'}</p>
-                            <p className="metric-label">H-Index</p>
-                        </div>
+                    // ⬅️ THE LINK WRAPPER
+                    <Link to="/research-metrics" className="scopus-metrics-link block group"> 
+                        <div className="scopus-metrics-grid">
+                            
+                            {/* H-Index Card */}
+                            <div className="metric-card transition-transform duration-300 group-hover:scale-[1.03] group-hover:shadow-xl">
+                                <TrendingUp className="metric-icon" size={32} />
+                                <p className="metric-value">{metrics.hIndex || 'N/A'}</p>
+                                <p className="metric-label">H-Index</p>
+                            </div>
 
-                        {/* Total Citations Card */}
-                        <div className="metric-card">
-                            <BarChart className="metric-icon" size={32} />
-                            <p className="metric-value">{metrics.totalCitations || 'N/A'}</p>
-                            <p className="metric-label">Total Citations</p>
+                            {/* Total Citations Card */}
+                            <div className="metric-card transition-transform duration-300 group-hover:scale-[1.03] group-hover:shadow-xl">
+                                <BarChart className="metric-icon" size={32} />
+                                <p className="metric-value">{metrics.totalCitations || 'N/A'}</p>
+                                <p className="metric-label">Total Citations</p>
+                            </div>
+
+                            {/* Documents Card */}
+                            <div className="metric-card transition-transform duration-300 group-hover:scale-[1.03] group-hover:shadow-xl">
+                                <FileText className="metric-icon" size={32} />
+                                <p className="metric-value">{metrics.documentCount || 'N/A'}</p>
+                                <p className="metric-label">Documents</p>
+                            </div>
                         </div>
-                        
-                        {/* Document Count Card */}
-                        <div className="metric-card">
-                            <FileText className="metric-icon" size={32} />
-                            <p className="metric-value">{metrics.documentCount || 'N/A'}</p>
-                            <p className="metric-label">Documents</p>
-                        </div>
-                    </div>
+                    </Link>
                 ) : (
                     <p className="error-message">Unable to display live Scopus data at this time.</p>
                 )}

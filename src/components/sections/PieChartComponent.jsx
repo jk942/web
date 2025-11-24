@@ -1,4 +1,4 @@
-// PieChartComponent.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -10,7 +10,7 @@ const PieChartComponent = () => {
     const [loading, setLoading] = useState(true);
     const serverPort = 3001;
 
-    // Colors for the pie chart
+    
     const COLORS = [
         INTI_RED, 
         INTI_YELLOW, 
@@ -33,7 +33,7 @@ const PieChartComponent = () => {
                 }
             } catch (error) {
                 console.error("Error fetching subject area data:", error);
-                // Fallback data
+
                 setChartData({
                     totalDocuments: 4684,
                     subjectAreas: [
@@ -67,7 +67,6 @@ const PieChartComponent = () => {
         );
     }
 
-    // Custom tooltip for pie chart
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
@@ -89,9 +88,8 @@ const PieChartComponent = () => {
         return null;
     };
 
-    // Custom label for pie chart
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        if (percent < 0.05) return null; // Don't show labels for very small slices
+        if (percent < 0.05) return null;
         
         const RADIAN = Math.PI / 180;
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -116,7 +114,7 @@ const PieChartComponent = () => {
     return (
         <section className="pie-chart-section bg-gray-50 py-16 border-t border-gray-200">
             <div className="container">
-                {/* Header */}
+                {}
                 <div className="text-center mb-12">
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <PieChartIcon className="w-8 h-8" style={{ color: INTI_RED }} />
@@ -128,9 +126,9 @@ const PieChartComponent = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                    {/* Left Side - Total Documents and Top Areas */}
+                    {}
                     <div className="space-y-6">
-                        {/* Total Documents Card */}
+                        {}
                         <div className="bg-white rounded-lg shadow-md p-6 text-center border border-gray-200">
                             <FileText className="w-12 h-12 mx-auto mb-3" style={{ color: INTI_RED }} />
                             <p className="text-3xl font-bold text-gray-800">{chartData.totalDocuments.toLocaleString()}</p>
@@ -138,7 +136,7 @@ const PieChartComponent = () => {
                             <p className="text-sm text-gray-500 mt-2">Scopus Indexed</p>
                         </div>
 
-                        {/* Top 5 Subject Areas */}
+                        {}
                         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
                             <h3 className="text-lg font-bold text-gray-800 mb-4">Top 5 Research Areas</h3>
                             <div className="space-y-3">
@@ -165,7 +163,7 @@ const PieChartComponent = () => {
                         </div>
                     </div>
 
-                    {/* Middle - Pie Chart */}
+                    {}
                     <div className="lg:col-span-2 bg-white rounded-lg shadow-lg p-6 border border-gray-200">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-xl font-bold text-gray-800">Subject Area Distribution</h3>
@@ -214,7 +212,7 @@ const PieChartComponent = () => {
                             </PieChart>
                         </ResponsiveContainer>
 
-                        {/* Chart Summary */}
+                        {}
                         <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                             <p className="text-sm text-blue-800 text-center">
                                 <strong>Research Focus:</strong> Engineering ({chartData.subjectAreas[0].percentage}%) and 
@@ -224,7 +222,7 @@ const PieChartComponent = () => {
                     </div>
                 </div>
 
-                {/* Data Source and Last Updated */}
+                {}
                 <div className="text-center mt-8 space-y-2">
                     <p className="text-sm text-gray-500">
                         Data sourced from Scopus • Based on ASJC classification
